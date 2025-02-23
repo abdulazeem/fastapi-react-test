@@ -1,16 +1,21 @@
 from fastapi import FastAPI
-from fastapi.middleware.cors import CORSMiddleware  # <-- Note the correct capitalization
+from fastapi.staticfiles import StaticFiles
+from fastapi.middleware.cors import CORSMiddleware  # Correct capitalization
 
 app = FastAPI()
 
-# Configure CORS properly
+# Configure CORS to allow frontend to access backend
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://localhost:3000"],  # Specify exact origin
+    allow_origins=["http://localhost:3000"],  # Ensure React frontend is allowed
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
+
+# Serve the React build folder as static files
+# app.mount("/", StaticFiles(directory="frontend/build", html=True), name="static")
 
 
 @app.get("/calculate/{operation}")
